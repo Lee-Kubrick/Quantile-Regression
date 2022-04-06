@@ -1,0 +1,410 @@
+select
+  coalesce(wg_side.INTRNL_TP_ID, wh_side.INTRNL_TP_ID) as INTRNL_TP_ID              ,
+  cast(coalesce(wg_side.FIL_PRD_ID, wh_side.FIL_PRD) as INT)        as FIL_PRD                   ,
+  coalesce(wg_side.WR_YEAR, wh_side.WT_YEAR)           as TAX_YEAR                  ,
+  coalesce(wg_side.EXISTS_IN_TWRETURN, 0)              as EXISTS_IN_TWRETURN        ,
+  coalesce(wh_side.EXISTS_IN_NYS1, 0)                  as EXISTS_IN_NYS1            ,
+  coalesce(wh_side.EXISTS_IN_NYS45, 0)                 as EXISTS_IN_NYS45           ,
+  wh_side.DSN                                          as NYS45_DSN                 ,
+  wh_side.UPD_TIMESTAMP                                as NYS45_UPD_TIMESTAMP       ,
+  wh_side.SEASONAL_EMPLOYER                            as NYS45_SEASONAL_EMPLOYER   ,
+  wh_side.SEASONAL_TID                                 as NYS45_SEASONAL_TID        ,
+  wh_side.MAN_REV_CAT                                  as NYS45_MAN_REV_CAT         ,
+  wh_side.PRIOR_EXCEP                                  as NYS45_PRIOR_EXCEP         ,
+  wh_side.SKIP_IND                                     as NYS45_SKIP_IND            ,
+  wh_side.RTN_TYPE                                     as NYS45_RTN_TYPE            ,
+  wh_side.STATUS_IND                                   as NYS45_STATUS_IND          ,
+  wh_side.EXCEP_FLG                                    as NYS45_EXCEP_FLG           ,
+  wh_side.STATUS_DATE                                  as NYS45_STATUS_DATE         ,
+  wh_side.POST_DATE                                    as NYS45_POST_DATE           ,
+  wh_side.RCVD_DATE                                    as NYS45_RCVD_DATE           ,
+  wh_side.POSTMARK_DATE                                as NYS45_POSTMARK_DATE       ,
+  wh_side.CRE_DATE                                     as NYS45_CRE_DATE            ,
+  wh_side.TOTAL_WITHHELD                               as NYS45_WH_TOT_AMT          ,
+  wh_side.TOTAL_PMT_AMT                                as NYS45_PMT_TOT_AMT         ,
+  wh_side.WT_UI_TOT_PMT                                as NYS45_UI_TOT_PMT          ,
+  wh_side.PREV_RECON_PMT                               as NYS45_PREV_RECON_PMT      ,
+  wh_side.TOTAL_NYS1_PMT                               as NYS45_RPTD_NYS1_PMT       ,
+  wh_side.TOTAL_AMT_DUE                                as NYS45_TOT_DUE             ,
+  wh_side.PREV_QTR_CR_AMT                              as NYS45_PREV_QTR_CR_AMT     ,
+  wh_side.NEXT_QTR_CR_AMT                              as NYS45_NEXT_QTR_CR_AMT     ,
+  wh_side.DTF_CR_AMT                                   as NYS45_DTF_CR_AMT          ,
+  wh_side.REFUND_AMT                                   as NYS45_REFUND_AMT          ,
+  wh_side.DTF_REFUND_AMT                               as NYS45_DTF_REFUND_AMT      ,
+  wh_side.FRN_NMBR                                     as NYS45_FRN_NMBR            ,
+  wh_side.TOTAL_WITHHELD_NYS                           as NYS45_NYS_WH_TOT          ,
+  wh_side.TOTAL_WITHHELD_NYC                           as NYS45_NYC_WH_TOT          ,
+  wh_side.TOTAL_WITHHELD_YON                           as NYS45_YON_WH_TOT          ,
+  wh_side.FILE_MEDIA_TYPE                              as NYS45_FILE_MEDIA_TYPE     ,
+-- wh_side.AUDIT_FLG                                    as NYS45_AUDIT_FLG           ,
+  wh_side.PENALTY_IND                                  as NYS45_PENALTY_IND         ,
+  wh_side.CPW_IND                                      as NYS45_CPW_IND             ,
+  wh_side.DTF_NEXT_QTR_CR_AM                           as NYS45_DTF_NEXT_QTR_CR_AM  ,
+-- wh_side.CRD_DSN                                      as NYS45_CRD_DSN             ,
+  wh_side.EFT_IND                                      as NYS45_EFT_IND             ,
+-- wh_side.TAX_TYPE_CODE                                as NYS45_TAX_TYPE_CODE       ,
+-- wh_side.CRD_YEAR                                     as NYS45_CRD_YEAR            ,
+  wh_side.PAYROLL_SERVICE_ID                           as NYS45_PAYROLL_SERVICE_ID  ,
+  wh_side.A1_OFFSET_AMT                                as NYS45_A1_OFFSET_AMT       ,
+  wh_side.A2_OFFSET_AMT                                as NYS45_A2_OFFSET_AMT       ,
+  wh_side.INTEREST_OFFSET_AM                           as NYS45_INTEREST_OFFSET_AMT ,
+  wh_side.TAX_OFFSET_AMT                               as NYS45_TAX_OFFSET_AMT      ,
+  wh_side.AMT_FINAL_BAL                                as NYS45_FINAL_BAL_AMT       ,
+  wh_side.AMT_UNCL_OVRPMT                              as NYS45_UNCL_OVRPMT_AMT     ,
+  wh_side.ASMT_RSN_CD                                  as NYS45_ASMT_RSN_CD         ,
+  wh_side.RTN_DUE_DATE                                 as NYS45_RTN_DUE_DATE        ,
+  wh_side.BAL_RCVD_DATE                                as NYS45_BAL_RCVD_DATE       ,
+  wh_side.TAX_PER_DTF_AMT                              as NYS45_TAX_PER_DTF_AMT     ,
+  wh_side.A1_AMT                                       as NYS45_A1_AMT              ,
+  wh_side.A2_AMT                                       as NYS45_A2_AMT              ,
+  wh_side.INT_AMT                                      as NYS45_INT_AMT             ,
+  wh_side.PREV_FILED_OP_AMT                            as NYS45_PREV_FILED_OP_AMT   ,
+  wh_side.NYS45_PD_ON_PRIOR_RCON_AMT                   as AMENDED_PMT_CREDITED      ,
+  coalesce(wh_side.NYS45_AMENDED, 0)                   as AMENDED_IND        ,
+  wh_side.NYS1_WH_SUM                                                               ,
+  wh_side.NYS1_WH_NYS_SUM                                                           ,
+  wh_side.NYS1_WH_NYC_SUM                                                           ,
+  wh_side.NYS1_WH_YON_SUM                                                           ,
+  wh_side.NYS1_PMT_SUM                                                              ,
+  wh_side.NYS1_CR_AMT_SUM                                                           ,
+  wh_side.NYS1_TAX_PER_DTF_SUM                                                      ,
+  wh_side.NYS1_A1_AMT_SUM                                                           ,
+  wh_side.NYS1_A2_AMT_SUM                                                           ,
+  wh_side.PYRL_SVC                                                                  ,
+  coalesce(wh_side.VERIFIED_PYRL_SVC_IND, 0) as  VERIFIED_PYRL_SVC_IND                                                   ,
+  wh_side.NYS1_INT_SUM                                                              ,
+  wg_side.RTN_TYPE_CD      as TWRETURN_CURR_RTN_TYPE_CD                                  ,
+  wg_side.STATUS_CD        as TWRETURN_CURR_STATUS_CD                                    ,
+  wg_side.EXCP_CD          as TWRETURN_CURR_EXCP_CD                                      ,
+  wg_side.POST_DATE        as TWRETURN_CURR_POST_DATE                                    ,
+  wg_side.RCVD_DATE        as TWRETURN_CURR_RCVD_DATE                                    ,
+  wg_side.POSTMARK_DATE    as TWRETURN_CURR_POSTMARK_DATE                                ,
+  wg_side.EMPLOYEE_CNT     as TWRETURN_EMPLOYEE_CNT                                      ,
+  wg_side.TOT_WAGE_AMT     as TWRETURN_TOT_WAGE_AMT                                      ,
+  wg_side.TOT_WAGE_SWT_AMT as TWRETURN_TOT_WAGE_SWT_AMT                                  ,
+  wg_side.TOT_WTHLD_AMT    as TWRETURN_TOT_WTHLD_AMT                                     ,
+  wg_side.FILE_MEDIA_TYPE  as TWRETURN_CURR_FILE_MEDIA_TYPE                              ,
+  wg_side.PEN_STATUS_CD    as TWRETURN_CURR_PEN_STATUS_CD                                ,
+  wg_side.ANN_QTRLY_CD     as TWRETURN_ANN_QTRLY_CD                                      ,
+  wg_side.SEASONAL_CD      as TWRETURN_SEASONAL_CD                                       ,
+  wg_side.TWRETURN_EXCP_DSN_ID                                                           ,
+  wg_side.TWRETURN_EXCP_RTN_TYPE_CD                                                      ,
+  wg_side.TWRETURN_EXCP_STATUS_CD                                                        ,
+  wg_side.TWRETURN_EXCP_EXCP_CD                                                          ,
+  wg_side.TWRETURN_EXCP_POST_DATE                                                        ,
+  wg_side.TWRETURN_EXCP_RCVD_DATE                                                        ,
+  wg_side.TWRETURN_EXCP_POSTMARK_DATE                                                    ,
+  wg_side.TWRETURN_EXCP_EMPLOYEE_CNT                                                     ,
+  wg_side.TWRETURN_EXCP_TOT_WAGE_AMT                                                     ,
+  wg_side.TWRETURN_EXCP_TOT_WAGE_SWT_AMT                                                 ,
+  wg_side.TWRETURN_EXCP_TOT_WTHLD_AMT                                                    ,
+  wg_side.TWRETURN_EXCP_FILE_MEDIA_TYPE                                                  ,
+  wg_side.TWRETURN_EXCP_PEN_STATUS_CD                                                    ,
+  wg_side.TWRETURN_EXCP_ANN_QTRLY_CD                                                     ,
+  wg_side.TWRETURN_EXCP_SEASONAL_CD                                                      ,
+  coalesce(wg_side.TWRETURN_EXCP_CNT,0) as  TWRETURN_EXCP_CNT
+from
+  (
+    select
+      coalesce(nys45.INTRNL_TP_ID, nys1.INTRNL_TP_ID) as INTRNL_TP_ID,
+      case
+        when nys45.INTRNL_TP_ID is not null
+          then 1
+          else 0
+      end as EXISTS_IN_NYS45,
+      case
+        when nys1.INTRNL_TP_ID is not null
+          then 1
+          else 0
+      end                                   as EXISTS_IN_NYS1,
+      coalesce(nys45.WT_YEAR, nys1.WT_YEAR) as WT_YEAR       ,
+      coalesce(nys45.FIL_PRD, nys1.FIL_PRD) as FIL_PRD       ,
+      DSN                                                    ,
+      UPD_TIMESTAMP                                          ,
+      SEASONAL_EMPLOYER                                      ,
+      SEASONAL_TID                                           ,
+      MAN_REV_CAT                                            ,
+      PRIOR_EXCEP                                            ,
+      SKIP_IND                                               ,
+      RTN_TYPE                                               ,
+      STATUS_IND                                             ,
+      EXCEP_FLG                                              ,
+      STATUS_DATE                                            ,
+      POST_DATE                                              ,
+      RCVD_DATE                                              ,
+      POSTMARK_DATE                                          ,
+      CRE_DATE                                               ,
+      TOTAL_WITHHELD                                         ,
+      TOTAL_PMT_AMT                                          ,
+      WT_UI_TOT_PMT                                          ,
+      PREV_RECON_PMT                                         ,
+      TOTAL_NYS1_PMT                                         ,
+      TOTAL_AMT_DUE                                          ,
+      PREV_QTR_CR_AMT                                        ,
+      NEXT_QTR_CR_AMT                                        ,
+      DTF_CR_AMT                                             ,
+      REFUND_AMT                                             ,
+      DTF_REFUND_AMT                                         ,
+      FRN_NMBR                                               ,
+      TOTAL_WITHHELD_NYS                                     ,
+      TOTAL_WITHHELD_NYC                                     ,
+      TOTAL_WITHHELD_YON                                     ,
+      FILE_MEDIA_TYPE                                        ,
+      AUDIT_FLG                                              ,
+      PENALTY_IND                                            ,
+      CPW_IND                                                ,
+      DTF_NEXT_QTR_CR_AM                                     ,
+      CRD_DSN                                                ,
+      EFT_IND                                                ,
+      TAX_TYPE_CODE                                          ,
+      CRD_YEAR                                               ,
+      PAYROLL_SERVICE_ID                                     ,
+      A1_OFFSET_AMT                                          ,
+      A2_OFFSET_AMT                                          ,
+      INTEREST_OFFSET_AM                                     ,
+      TAX_OFFSET_AMT                                         ,
+      AMT_FINAL_BAL                                          ,
+      AMT_UNCL_OVRPMT                                        ,
+      ASMT_RSN_CD                                            ,
+      RTN_DUE_DATE                                           ,
+      BAL_RCVD_DATE                                          ,
+      TAX_PER_DTF_AMT                                        ,
+      A1_AMT                                                 ,
+      A2_AMT                                                 ,
+      INT_AMT                                                ,
+      PREV_FILED_OP_AMT                                      ,
+      NYS45_PD_ON_PRIOR_RCON_AMT                             ,
+      NYS45_AMENDED                                          ,
+      nys1.NYS1_WH_SUM                                       ,
+      NYS1_WH_NYS_SUM                                        ,
+      NYS1_WH_NYC_SUM                                        ,
+      NYS1_WH_YON_SUM                                        ,
+      NYS1_PMT_SUM                                           ,
+      NYS1_CR_AMT_SUM                                        ,
+      NYS1_TAX_PER_DTF_SUM                                   ,
+      NYS1_A1_AMT_SUM                                        ,
+      NYS1_A2_AMT_SUM                                        ,
+      NYS1_INT_SUM                                           ,
+      pyrl.PYRL_SVC                                          ,
+      pyrl.VERIFIED_PYRL_SVC_IND
+    from
+      (
+        select *
+        from
+          WT.TWTRCON t1
+        WHERE
+          cast(t1.WT_YEAR as int) ='$P-TAX_YEAR'
+          and t1.FIL_PRD        in ('$P-TAX_PERIODS')
+          and t1.STATUS_IND not in ('' , 'A',
+                                    'D', 'S')
+      )
+      nys45
+      left join
+        (
+          select
+            SUBMITTER_EIN_ID,
+            PYRL_SVC        ,
+            1 as VERIFIED_PYRL_SVC_IND
+          from
+            (
+              SELECT
+                SUBMITTER_EIN_ID                 ,
+                trim(PYRL_SVC_SHRT_NAME) PYRL_SVC,
+                row_number() over (partition by SUBMITTER_EIN_ID order by
+                                   ROW_EFCTV_DT desc) as rownum
+              FROM
+                REF.TEMPSAG
+              WHERE
+                (
+                  AGNT_INACT_DT          > current timestamp
+                  OR AGNT_INACT_DT is null
+                )
+            )
+          where
+            rownum = 1
+        )
+        pyrl
+        on
+          pyrl.SUBMITTER_EIN_ID = nys45.PAYROLL_SERVICE_ID
+      left join
+        (
+          select
+            roll_up.INTRNL_TP_ID                                 ,
+            cast(roll_up.WT_YEAR as int) WT_YEAR                 ,
+            roll_up.FIL_PRD                                      ,
+            sum(roll_up.TOTAL_PMT_AMT)    NYS45_PD_ON_PRIOR_RCON_AMT,
+            1                          as NYS45_AMENDED
+          from
+            WT.TWTRCON roll_up
+          where
+            exists
+            (
+              select
+                is_amended.INTRNL_TP_ID                 ,
+                cast(is_amended.WT_YEAR as int) WT_YEAR ,
+                is_amended.FIL_PRD
+              from
+                WT.TWTRCON as is_amended
+              WHERE
+                is_amended.RTN_TYPE in ('P', 'Q')
+                and cast(is_amended.WT_YEAR as int) ='$P-TAX_YEAR'
+                and is_amended.FIL_PRD in ('$P-TAX_PERIODS')
+                and is_amended.INTRNL_TP_ID = roll_up.INTRNL_TP_ID
+                and is_amended.WT_YEAR      = roll_up.WT_YEAR
+                and is_amended.FIL_PRD      = roll_up.FIL_PRD
+            )
+          group by
+            roll_up.INTRNL_TP_ID,
+            roll_up.WT_YEAR     ,
+            roll_up.FIL_PRD
+        )
+        pmt_ru
+        on
+          nys45.INTRNL_TP_ID = pmt_ru.INTRNL_TP_ID
+          and nys45.WT_YEAR  = pmt_ru.WT_YEAR
+          and nys45.FIL_PRD  = pmt_ru.FIL_PRD
+      full outer join
+        (
+          select
+            INTRNL_TP_ID                 ,
+            cast(WT_YEAR as int) WT_YEAR ,
+            FIL_PRD                      ,
+            1                       as EXISTS_IN_NYS1          ,
+            sum(TOTAL_WITHHELD)     as NYS1_WH_SUM             ,
+            sum(TOTAL_WITHHELD_NYS) as NYS1_WH_NYS_SUM         ,
+            sum(TOTAL_WITHHELD_NYC) as NYS1_WH_NYC_SUM         ,
+            sum(TOTAL_WITHHELD_YON) as NYS1_WH_YON_SUM         ,
+            sum
+              (
+                CASE
+                  WHEN ASMT_RSN_CD = 'LFF'
+                    then TOTAL_WITHHELD
+                    else TOTAL_PMT_AMT
+                end
+              )
+                                 as NYS1_PMT_SUM        ,
+            sum(CREDIT_AMT)         NYS1_CR_AMT_SUM     ,
+            sum(TAX_PER_DTF_AMT)    NYS1_TAX_PER_DTF_SUM,
+            sum(A1_AMT)             NYS1_A1_AMT_SUM     ,
+            sum(A2_AMT)             NYS1_A2_AMT_SUM     ,
+            sum(INT_AMT)            NYS1_INT_SUM
+          from
+            WT.TWTRTRN
+          where
+            cast(WT_YEAR as int) ='$P-TAX_YEAR'
+            and FIL_PRD in ('$P-TAX_PERIODS')
+          group by
+            INTRNL_TP_ID,
+            WT_YEAR     ,
+            FIL_PRD
+        )
+        nys1
+        on
+          nys45.INTRNL_TP_ID = nys1.INTRNL_TP_ID
+          and nys45.WT_YEAR  = nys1.WT_YEAR
+          and nys45.FIL_PRD  = nys1.FIL_PRD
+  )
+  wh_side
+  full outer join
+    (
+      select
+        coalesce(mainc.INTRNL_TP_ID, excep.INTRNL_TP_ID)                  INTRNL_TP_ID ,
+        coalesce(cast(mainc.WR_YEAR as int), cast(excep.WR_YEAR as int))       WR_YEAR              ,
+        coalesce(mainc.FIL_PRD_ID, excep.FIL_PRD_ID)                           FIL_PRD_ID           ,
+        coalesce(mainc.RTN_TYPE_CD, excep.TWRETURN_EXCP_RTN_TYPE_CD)           as RTN_TYPE_CD       ,
+        coalesce(mainc.STATUS_CD, excep.TWRETURN_EXCP_STATUS_CD)               as STATUS_CD         ,
+        coalesce(mainc.EXCP_CD, excep.TWRETURN_EXCP_EXCP_CD)                   as EXCP_CD           ,
+        coalesce(mainc.POST_DATE, excep.TWRETURN_EXCP_POST_DATE)               as POST_DATE         ,
+        coalesce(mainc.RCVD_DATE, excep.TWRETURN_EXCP_RCVD_DATE)               as RCVD_DATE         ,
+        coalesce(mainc.POSTMARK_DATE, excep.TWRETURN_EXCP_POSTMARK_DATE)       as POSTMARK_DATE     ,
+        coalesce(mainc.EMPLOYEE_CNT, excep.TWRETURN_EXCP_EMPLOYEE_CNT)         as EMPLOYEE_CNT      ,
+        coalesce(mainc.TOT_WAGE_AMT, excep.TWRETURN_EXCP_TOT_WAGE_AMT)         as TOT_WAGE_AMT      ,
+        coalesce(mainc.TOT_WAGE_SWT_AMT, excep.TWRETURN_EXCP_TOT_WAGE_SWT_AMT) as TOT_WAGE_SWT_AMT  ,
+        coalesce(mainc.TOT_WTHLD_AMT, excep.TWRETURN_EXCP_TOT_WTHLD_AMT)       as TOT_WTHLD_AMT     ,
+        coalesce(mainc.FILE_MEDIA_TYPE, excep.TWRETURN_EXCP_FILE_MEDIA_TYPE)   as FILE_MEDIA_TYPE   ,
+        coalesce(mainc.PEN_STATUS_CD, excep.TWRETURN_EXCP_PEN_STATUS_CD)       as PEN_STATUS_CD     ,
+        coalesce(mainc.ANN_QTRLY_CD, excep.TWRETURN_EXCP_ANN_QTRLY_CD)         as ANN_QTRLY_CD      ,
+        coalesce(mainc.SEASONAL_CD, excep.TWRETURN_EXCP_SEASONAL_CD)           as SEASONAL_CD       ,
+        1                                                                      as EXISTS_IN_TWRETURN,
+        excep.TWRETURN_EXCP_DSN_ID                                                                  ,
+        excep.TWRETURN_EXCP_RTN_TYPE_CD                                                             ,
+        excep.TWRETURN_EXCP_STATUS_CD                                                               ,
+        excep.TWRETURN_EXCP_EXCP_CD                                                                 ,
+        excep.TWRETURN_EXCP_POST_DATE                                                               ,
+        excep.TWRETURN_EXCP_RCVD_DATE                                                               ,
+        excep.TWRETURN_EXCP_POSTMARK_DATE                                                           ,
+        excep.TWRETURN_EXCP_EMPLOYEE_CNT                                                            ,
+        excep.TWRETURN_EXCP_TOT_WAGE_AMT                                                            ,
+        excep.TWRETURN_EXCP_TOT_WAGE_SWT_AMT                                                        ,
+        excep.TWRETURN_EXCP_TOT_WTHLD_AMT                                                           ,
+        excep.TWRETURN_EXCP_FILE_MEDIA_TYPE                                                         ,
+        excep.TWRETURN_EXCP_PEN_STATUS_CD                                                           ,
+        excep.TWRETURN_EXCP_ANN_QTRLY_CD                                                            ,
+        excep.TWRETURN_EXCP_SEASONAL_CD                                                             ,
+        excep.TWRETURN_EXCP_CNT
+      from
+        (
+          select *
+          from
+            WAGES.TWRETURN mainc
+          where
+            cast(mainc.WR_YEAR as int) ='$P-TAX_YEAR'
+            and mainc.FIL_PRD_ID in ('$P-TAX_PERIODS')
+            and mainc.STATUS_CD = 'C'
+        )
+        mainc
+        full outer join
+          (
+            select
+              excep.INTRNL_TP_ID                                                ,
+              cast(excep.WR_YEAR as int) as WR_YEAR                             ,
+              excep.FIL_PRD_ID                                                  ,
+              max(excep.DSN_ID)                    as TWRETURN_EXCP_DSN_ID          ,
+              listagg(excep.RTN_TYPE_CD, ', ')     as TWRETURN_EXCP_RTN_TYPE_CD     ,
+              max(excep.STATUS_CD)                 as TWRETURN_EXCP_STATUS_CD       ,
+              listagg(excep.EXCP_CD, ', ')            TWRETURN_EXCP_EXCP_CD         ,
+              max(excep.POST_DATE)                 as TWRETURN_EXCP_POST_DATE       ,
+              max(excep.RCVD_DATE)                 as TWRETURN_EXCP_RCVD_DATE       ,
+              max(excep.POSTMARK_DATE)             as TWRETURN_EXCP_POSTMARK_DATE   ,
+              max(excep.EMPLOYEE_CNT)              as TWRETURN_EXCP_EMPLOYEE_CNT    ,
+              max(excep.TOT_WAGE_AMT)              as TWRETURN_EXCP_TOT_WAGE_AMT    ,
+              max(excep.TOT_WAGE_SWT_AMT)          as TWRETURN_EXCP_TOT_WAGE_SWT_AMT,
+              max(excep.TOT_WTHLD_AMT)             as TWRETURN_EXCP_TOT_WTHLD_AMT   ,
+              listagg(excep.FILE_MEDIA_TYPE, ', ') as TWRETURN_EXCP_FILE_MEDIA_TYPE ,
+              max(excep.PEN_STATUS_CD)             as TWRETURN_EXCP_PEN_STATUS_CD   ,
+              max(excep.ANN_QTRLY_CD)              as TWRETURN_EXCP_ANN_QTRLY_CD    ,
+              max(excep.SEASONAL_CD)               as TWRETURN_EXCP_SEASONAL_CD     ,
+              count(*)                             as TWRETURN_EXCP_CNT
+            from
+              WAGES.TWRETURN excep
+            where
+              cast(WR_YEAR as int) ='$P-TAX_YEAR'
+              and FIL_PRD_ID in ('$P-TAX_PERIODS')
+              and STATUS_CD = 'E'
+              --      and
+              --      (
+              --       SUBSTR(INTRNL_TP_ID,1,6)     != 'B000000'
+              --      and length(trim(INTRNL_TP_ID))=14
+              --     )
+            group by
+              INTRNL_TP_ID,
+              WR_YEAR     ,
+              FIL_PRD_ID
+          )
+          excep
+          on
+            excep.INTRNL_TP_ID             = mainc.INTRNL_TP_ID
+            and cast(excep.WR_YEAR as int) = cast(mainc.WR_YEAR as int)
+            and excep.FIL_PRD_ID           = mainc.FIL_PRD_ID
+    )
+    wg_side
+    on
+      wh_side.INTRNL_TP_ID = wg_side.INTRNL_TP_ID
+      and wh_side.WT_YEAR  = wg_side.WR_YEAR
+      and wh_side.FIL_PRD  = wg_side.FIL_PRD_ID
+where
+  not
+  (
+    SUBSTR(coalesce(wg_side.INTRNL_TP_ID, wh_side.INTRNL_TP_ID), 1, 7 )    = 'B000000'
+    and length(trim(coalesce(wg_side.INTRNL_TP_ID, wh_side.INTRNL_TP_ID))) = 14
+  )
